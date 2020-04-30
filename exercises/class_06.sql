@@ -6,8 +6,7 @@ SELECT * FROM actor a1
 	ORDER BY last_name;
 	
 #2. Find actors that don't work in any film
-SELECT * FROM actor
-	WHERE NOT EXISTS (SELECT actor_id FROM film_actor);
+SELECT * FROM actor WHERE actor_id NOT IN (SELECT DISTINCT actor_id FROM film_actor);
 
 #3. Find customers that rented only one film
 SELECT * FROM customer
@@ -17,11 +16,11 @@ SELECT * FROM customer
 SELECT * FROM customer
 	WHERE (SELECT count(*) FROM rental WHERE rental.customer_id = customer.customer_id) > 1;
 
-#5. List the actors that acted in 'BETRAYED REAR' or in 'CATCH AMISTAD'
+#5. List the actors that acted in 'BETRAYED REAR' or in 'CATCH AMISTAD'			     
 SELECT * FROM actor
-	WHERE actor_id IN (SELECT actor_id FROM film_actor
-					   	   WHERE film_id IN (SELECT film_id FROM film
-					   					         WHERE title = 'BETRAYED REAR' OR title = 'CATCH AMISTAD'));
+    WHERE actor_id IN (SELECT actor_id FROM film_actor
+                           WHERE film_id IN (SELECT film_id FROM film
+                                                 WHERE title IN ('BETRAYED REAR', 'CATCH AMISTAD')));
 					   					        
 #6. List the actors that acted in 'BETRAYED REAR' but not in 'CATCH AMISTAD'
 SELECT * from actor
