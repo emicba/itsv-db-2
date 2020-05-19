@@ -26,3 +26,10 @@ SELECT category.name, AVG(`length`) as `Average` FROM film, film_category, categ
     GROUP BY film_category.category_id
     HAVING AVG(`length`) > (SELECT AVG(`length`) FROM film)
     ORDER BY `Average` DESC;
+    
+#5. Show sales per film rating
+SELECT film.rating, SUM(payment.amount) AS sales FROM payment
+    INNER JOIN rental ON payment.rental_id = rental.rental_id
+    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
+    INNER JOIN film ON inventory.film_id = film.film_id
+    GROUP BY film.rating;
